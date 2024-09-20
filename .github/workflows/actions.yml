@@ -33,7 +33,7 @@ jobs:
         # Allow time for the API to be ready before running tests
 
       - name: Run Artillery fuzz tests
-        run: npx artillery run fuzz-test.yml
+        run: npx artillery run fuzz.yml
 
       - name: Stop server after fuzzing
         run: kill $(jobs -p)
