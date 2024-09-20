@@ -1,0 +1,26 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+
+scenarios:
+  - name: "Fuzz Add API Endpoint"
+    flow:
+      - get:
+          url: "/add/{{$randomNumber(1,2147483647)}}/{{$randomNumber(1,2147483647)}}"
+
+  - name: "Fuzz Multiply API Endpoint"
+    flow:
+      - get:
+          url: "/multiply/{{$randomNumber(1,2147483647)}}/{{$randomNumber(1,2147483647)}}"
+
+  - name: "Fuzz Subtract API Endpoint"
+    flow:
+      - get:
+          url: "/subtract/{{$randomNumber(1,2147483647)}}/{{$randomNumber(1,2147483647)}}"
+
+  - name: "Fuzz Divide API Endpoint"
+    flow:
+      - get:
+          url: "/divide/{{$randomNumber(1,2147483647)}}/{{$randomNumber(1,2147483647)}}"

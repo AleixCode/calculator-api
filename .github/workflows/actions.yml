@@ -1,0 +1,40 @@
+name: API Fuzzing Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start the API Server
+        run: npm start &
+        # The "&" runs the server in the background so fuzz tests can run
+
+      - name: Wait for server to be up
+        run: sleep 10
+        # Allow time for the API to be ready before running tests
+
+      - name: Run Artillery fuzz tests
+        run: npx artillery run fuzz-test.yml
+
+      - name: Stop server after fuzzing
+        run: kill $(jobs -p)
+
