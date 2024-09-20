@@ -35,10 +35,4 @@ jobs:
       - name: Run Artillery fuzz tests
         run: npx artillery run fuzz.yml
 
-      - name: Stop server after fuzzing
-        run: |
-          if [ -f api_server.pid ]; then
-            kill $(cat api_server.pid)  # Use the saved PID to stop the server
-            rm api_server.pid            # Clean up the PID file
-          fi
 
