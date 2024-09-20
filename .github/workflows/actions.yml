@@ -25,16 +25,20 @@ jobs:
         run: npm install
 
       - name: Start the API Server
-        run: npm start &
-        # The "&" runs the server in the background so fuzz tests can run
+        run: |
+          npm start & 
+          echo $! > api_server.pid  # Save the PID of the server process
 
       - name: Wait for server to be up
         run: sleep 10
-        # Allow time for the API to be ready before running tests
 
       - name: Run Artillery fuzz tests
         run: npx artillery run fuzz.yml
 
       - name: Stop server after fuzzing
-        run: kill $(jobs -p)
+        run: |
+          if [ -f api_server.pid ]; then
+            kill $(cat api_server.pid)  # Use the saved PID to stop the server
+            rm api_server.pid            # Clean up the PID file
+          fi
 
